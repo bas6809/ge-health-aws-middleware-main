@@ -45,5 +45,5 @@ def patients_html():
         if conn:
             conn.close()
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=443, ssl_context=('/etc/ssl/geCA/cert.pem','/etc/ssl/geCA/key.pem') debug=True)
