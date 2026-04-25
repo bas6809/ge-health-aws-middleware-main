@@ -4,9 +4,9 @@ import config
 try:
     conn = pymysql.connect(
         host="server-3.c4qyicfkvft8.us-east-1.rds.amazonaws.com",
-        user=config.root_USER,
-        password=config.root_PASS,
-        database=config.root_NAME,
+        user=config.DB_USER,
+        password=config.DB_PASS,
+        database=config.DB_NAME,
         port=3306
     )
     print("Connected successfully!")
