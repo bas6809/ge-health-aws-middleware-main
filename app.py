@@ -22,7 +22,7 @@ def get_equipment():
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        cursor.execute("SELECT * FROM equipment")  # change to your table
+        cursor.execute("SELECT * FROM Equipment_Repairs")
         rows = cursor.fetchall()
 
         conn.close()
@@ -37,4 +37,4 @@ def get_equipment():
         return jsonify({"status": "error", "message": str(e)})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
