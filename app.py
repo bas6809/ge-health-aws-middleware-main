@@ -8,8 +8,8 @@ CORS(app)
 
 def get_db_connection():
     return pymysql.connect(
-        host=config.root_host,
-        user=config.root_USER,
+        host=config.DB_HOST,
+        user=config.DB_USER,
         password=config.DB_PASS,
         database=config.DB_NAME,
         port=3306,
@@ -36,19 +36,20 @@ def get_equipment():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
 
-@app.route("/api/equipment", methods=["POST"])
+@app.route('/api/equipment', methods=["POST"])
 def add_equipment():
     conn = None
 
     try:
         data = request.get_json()
 
-        equipment_name = data.get("equipment_name")
-        equipment_type = data.get("equipment_type")
-        location = data.get("location")
-        status = data.get("status")
+        equipment_type = data.get("Equipment_Type")
+        location = data.get("Location")
+        technician = data.get("Technician")
+        last_repaired = data.get("Last_Repaired")
+        notes = data.get("Notes")
 
-        if not equipment_name or not equipment_type or not location or not status:
+        if not equipment_type or not location or not technician or not last_repaired or not notes:
             return jsonify({
                 "status": "error",
                 "message": "Missing required fields"
@@ -58,16 +59,17 @@ def add_equipment():
         cursor = conn.cursor()
 
         sql = """
-            INSERT INTO equipment 
-            (equipment_name, equipment_type, location, status)
-            VALUES (%s, %s, %s, %s)
+            INSERT INTO Equipment_Repairs 
+            (Equipment_Type, Location, Technician, Last_Repaired, Notes)
+            VALUES (%s, %s, %s, %s, %s)
         """
 
         values = (
-            equipment_name,
             equipment_type,
             location,
-            status
+            technician,
+            last_repaired,
+            notes
         )
 
         cursor.execute(sql, values)
