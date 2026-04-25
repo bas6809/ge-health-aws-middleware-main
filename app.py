@@ -90,4 +90,4 @@ def add_equipment():
             conn.close()
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=443, ssl_context=('/etc/ssl/geCA/cert.pem','/etc/ssl/geCA/key.pem') debug=True) #Make sure you refer to SSL Setup File before setting
+    app.run(host='0.0.0.0', port=443, ssl_context=('/etc/ssl/geCA/cert.pem','/etc/ssl/geCA/key.pem'), debug=True) #Make sure you refer to SSL Setup File before setting
