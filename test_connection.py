@@ -3,7 +3,7 @@ import config
 
 try:
     conn = pymysql.connect(
-        host="server-3.c4qyicfkvft8.us-east-1.rds.amazonaws.com",
+        host="server3.c4qyicfkvft8.us-east-1.rds.amazonaws.com",
         user=config.DB_USER,
         password=config.DB_PASS,
         database=config.DB_NAME,
