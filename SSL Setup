@@ -1,0 +1,47 @@
+This is for creating a self-signing CA for running the application over HTTPS
+
+1. In your EC2 instance, run the following:
+
+sudo apt update
+sudo apt install openssl
+
+2. Make a directory to store the certificate and private key
+
+sudo mkdir /etc/ssl/geGA //File path is important for __main__ function for .py files
+cd /etc/ssl/geGA
+
+3. Generate the certifcate pairs with the following command:
+
+sudo openssl req -x509 -newkey rsa:4096 -nodes -out /etc/ssl/geCA/cert.pem -keyout /etc/ssl/geCA/key.pem -days 365 //Certicates are valid for 365 days
+
+4. Fill in the following areas when prompted*
+
+*IT IS IMPORTANT TO PUT THE ELATSIC IP IN THE COMMON NAME FIELD
+
+Country Name: US
+State: Pennsylvania
+Locality: State College
+Organization Name: GE Healthcare
+Common Name: [ELASTIC IP]
+Email Address: [leave blank, press enter]
+
+5. Change file permissions on both keys
+For key.pem: sudo chmod 600 /etc/ssl/geCA/key.pem (Owner has read and write permissions, group and others have no access)
+For cert.pem: sudo chmod 644 /etc/ssl/geCA/cert.pem (Owner has read and write permissions, group and others have read access)
+
+Changes to app.py and patient_html.py have been made to include both certificates, as well as for the front-end with the elastic IP
+
+6. Activate venv and run app.py*
+
+*sudo is important to include before running, HTTPS requires sudo
+source/venv/bin/activate
+source/venv/bin/python3 app.py
+
+
+Before you visit the website, change your Security Controls for inbound traffic to 443 and allow all for now
+7. Visit https://[ELASTIC IP]/api/equipment first to byass error 
+
+The CAs work in the cloud, but locally your browser will not recognize the website. You could bypass this by downloading the private key to your local device, but going to Advanced in the browser is easier
+
+
+
