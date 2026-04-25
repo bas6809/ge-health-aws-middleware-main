@@ -1,0 +1,88 @@
+Make the server Ubuntu!!!!
+
+
+2. Security Group Rules
+RDS Security Group
+
+The RDS MySQL database must allow traffic from the middleware server.
+
+Add this inbound rule to the RDS security group:
+
+Type	Port	Source
+MySQL/Aurora	3306	Middleware EC2 security group
+
+Do not open the database to everyone unless it is just for temporary testing.
+
+Middleware EC2 Security Group
+
+The Ubuntu middleware server needs to allow SSH and API traffic.
+
+Add these inbound rules:
+
+Type	Port	Source
+SSH	22	Your IP address
+Custom TCP	5000	Frontend security group or 0.0.0.0/0 for testing
+
+For testing, port 5000 can temporarily be open to the public. For a cleaner final setup, only allow the frontend server to access it.
+
+3. SSH Into the Ubuntu Middleware Server
+
+From your computer, connect to the Ubuntu EC2 instance:
+
+chmod 400 GE_healthImproved.pem
+ssh -i GE_healthImproved.pem ubuntu@YOUR_MIDDLEWARE_PUBLIC_IP
+
+Replace:
+
+YOUR_MIDDLEWARE_PUBLIC_IP
+
+with the public IPv4 address of your Ubuntu EC2 middleware server.
+
+4. Update Ubuntu and Install Required Software
+
+Run:
+
+sudo apt update
+sudo apt upgrade -y
+
+Install Python, pip, Git, and virtual environment support:
+
+sudo apt install python3 python3-pip python3-venv git -y
+5. Clone the Middleware Repository
+
+Clone the middleware repo:
+
+git clone https://github.com/bas6809/ge-health-aws-middleware-main.git
+cd ge-health-aws-middleware-main
+6. Create a Python Virtual Environment
+
+Inside the middleware project folder, run:
+
+python3 -m venv venv
+
+Activate it:
+
+source venv/bin/activate
+
+Your terminal should now show something like:
+
+(venv) ubuntu@ip-address:~/ge-health-aws-middleware-main$
+7. Install Python Dependencies
+
+Install Flask, Flask-CORS, and PyMySQL:
+
+pip install flask flask-cors pymysql
+
+You can also create a requirements.txt file:
+
+nano requirements.txt
+
+Add:
+
+flask
+flask-cors
+pymysql
+
+Save the file, then install everything with:
+
+pip install -r requirements.txt
